@@ -1,13 +1,77 @@
 @import "tailwindcss";
 
+/* =========================================================
+   EVENTORA — REFINED THEME
+   Midnight • Sage • Warm Ivory
+   ========================================================= */
+
+@theme {
+  /* Muted Sage — replaces Tailwind Indigo */
+  --color-indigo-50: #f1f5f3;
+  --color-indigo-100: #e3ebe8;
+  --color-indigo-200: #cbdad5;
+  --color-indigo-300: #aec4bc;
+  --color-indigo-400: #92ada4;
+  --color-indigo-500: #7c9a92;
+  --color-indigo-600: #6f8f86;
+  --color-indigo-700: #5d786f;
+  --color-indigo-800: #4b615a;
+  --color-indigo-900: #3d4f4a;
+  --color-indigo-950: #26332f;
+
+  /* Warm neutral — replaces Tailwind Slate */
+  --color-slate-50: #f8f8f5;
+  --color-slate-100: #f1f2ee;
+  --color-slate-200: #e3e5e1;
+  --color-slate-300: #ced1cd;
+  --color-slate-400: #939a96;
+  --color-slate-500: #68716d;
+  --color-slate-600: #515a56;
+  --color-slate-700: #3d4542;
+  --color-slate-800: #292f2d;
+  --color-slate-900: #191e1c;
+  --color-slate-950: #101513;
+}
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
 :root {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
-  color: #172033;
-  background: #f8fafc;
+
+  color: #191e1c;
+  background: #f8f8f5;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+
+  --eventora-ink: #191e1c;
+  --eventora-dark: #101513;
+
+  --eventora-sage: #6f8f86;
+  --eventora-sage-dark: #5d786f;
+  --eventora-sage-soft: #e3ebe8;
+
+  --eventora-ivory: #f8f8f5;
+  --eventora-white: #fcfcfa;
+
+  --eventora-stone: #e3e5e1;
+  --eventora-muted: #68716d;
+
+  --eventora-champagne: #d8c7a3;
 }
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -21,6 +85,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--eventora-ivory);
+  color: var(--eventora-ink);
 }
 
 button,
@@ -28,4 +94,34 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--eventora-sage);
+  color: white;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f2ee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aebbb6;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c9a92;
 }

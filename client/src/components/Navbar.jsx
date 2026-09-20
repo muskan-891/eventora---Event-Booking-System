@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  CalendarDays,
   LogOut,
   Menu,
   Ticket,
@@ -8,6 +7,7 @@ import {
   X,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import EventoraLogo from "./EventoraLogo";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -47,6 +47,8 @@ const Navbar = () => {
     setUser(null);
     setMenuOpen(false);
 
+    window.dispatchEvent(new Event("eventora-auth-change"));
+
     navigate("/");
   };
 
@@ -55,148 +57,178 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="h-20 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6">
+        <div className="flex h-20 items-center justify-between">
 
-          {/* Logo */}
+          {/* =========================
+              LOGO
+          ========================== */}
           <Link
             to="/"
             onClick={closeMenu}
-            className="flex items-center gap-2"
+            className="shrink-0 transition-opacity hover:opacity-85"
           >
-            <div className="h-10 w-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm">
-              <CalendarDays size={21} />
-            </div>
-
-            <span className="text-xl font-bold text-slate-900">
-              Eventora
-            </span>
+            <EventoraLogo />
           </Link>
 
-          {/* Desktop navigation */}
+          {/* =========================
+              DESKTOP NAVIGATION
+          ========================== */}
           <div className="hidden md:flex items-center gap-8">
 
+            {/* Home */}
             <Link
               to="/"
-              className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition"
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-indigo-600"
             >
               Home
             </Link>
 
+            {/* Events */}
             <Link
               to="/events"
-              className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition"
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-indigo-600"
             >
               Events
             </Link>
 
+            {/* My Bookings */}
             {user && (
               <Link
                 to="/my-bookings"
-                className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-indigo-600 transition"
+                className="flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-indigo-600"
               >
-                <Ticket size={17} />
+                <Ticket size={16} strokeWidth={1.8} />
                 My Bookings
               </Link>
             )}
 
+            {/* =========================
+                LOGGED OUT
+            ========================== */}
             {!user ? (
-              <>
+              <div className="flex items-center gap-4">
+
                 <Link
                   to="/login"
-                  className="text-sm font-semibold text-slate-700 hover:text-indigo-600 transition"
+                  className="text-sm font-semibold text-slate-700 transition-colors hover:text-indigo-600"
                 >
                   Login
                 </Link>
 
                 <Link
                   to="/register"
-                  className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 transition shadow-sm"
+                  className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-md"
                 >
                   Get Started
                 </Link>
-              </>
-            ) : (
-              <div className="flex items-center gap-4">
 
-                {/* User */}
-                <div className="flex items-center gap-2">
-                  <div className="h-9 w-9 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                    <User size={17} />
+              </div>
+            ) : (
+
+              /* =========================
+                  LOGGED IN
+              ========================== */
+              <div className="flex items-center gap-5">
+
+                {/* User information */}
+                <div className="flex items-center gap-2.5">
+
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+                    <User size={17} strokeWidth={1.8} />
                   </div>
 
                   <div className="leading-tight">
-                    <p className="text-xs text-slate-400">
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
                       Welcome
                     </p>
 
-                    <p className="text-sm font-semibold text-slate-800">
+                    <p className="max-w-[130px] truncate text-sm font-semibold text-slate-800">
                       {user.name}
                     </p>
                   </div>
+
                 </div>
 
                 {/* Logout */}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600 transition"
+                  className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                 >
-                  <LogOut size={17} />
+                  <LogOut size={16} strokeWidth={1.8} />
                   Logout
                 </button>
+
               </div>
             )}
           </div>
 
-          {/* Mobile menu button */}
+          {/* =========================
+              MOBILE MENU BUTTON
+          ========================== */}
           <button
+            type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden h-10 w-10 rounded-xl border border-slate-200 flex items-center justify-center text-slate-700"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-700 transition hover:bg-slate-50 md:hidden"
           >
-            {menuOpen ? <X size={21} /> : <Menu size={21} />}
+            {menuOpen ? (
+              <X size={20} strokeWidth={1.8} />
+            ) : (
+              <Menu size={20} strokeWidth={1.8} />
+            )}
           </button>
         </div>
 
-        {/* Mobile navigation */}
+        {/* =========================
+            MOBILE NAVIGATION
+        ========================== */}
         {menuOpen && (
-          <div className="md:hidden border-t border-slate-100 py-5">
+          <div className="border-t border-slate-100 py-5 md:hidden">
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
 
+              {/* Home */}
               <Link
                 to="/"
                 onClick={closeMenu}
-                className="text-sm font-medium text-slate-700"
+                className="rounded-xl px-3 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-indigo-600"
               >
                 Home
               </Link>
 
+              {/* Events */}
               <Link
                 to="/events"
                 onClick={closeMenu}
-                className="text-sm font-medium text-slate-700"
+                className="rounded-xl px-3 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-indigo-600"
               >
                 Events
               </Link>
 
+              {/* My Bookings */}
               {user && (
                 <Link
                   to="/my-bookings"
                   onClick={closeMenu}
-                  className="flex items-center gap-2 text-sm font-medium text-slate-700"
+                  className="flex items-center gap-2 rounded-xl px-3 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-indigo-600"
                 >
-                  <Ticket size={17} />
+                  <Ticket size={17} strokeWidth={1.8} />
                   My Bookings
                 </Link>
               )}
 
+              {/* =========================
+                  MOBILE LOGGED OUT
+              ========================== */}
               {!user ? (
-                <div className="flex flex-col gap-3 pt-2">
+                <div className="mt-3 flex flex-col gap-3 border-t border-slate-100 pt-4">
+
                   <Link
                     to="/login"
                     onClick={closeMenu}
-                    className="text-sm font-semibold text-slate-700"
+                    className="rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                   >
                     Login
                   </Link>
@@ -204,21 +236,27 @@ const Navbar = () => {
                   <Link
                     to="/register"
                     onClick={closeMenu}
-                    className="text-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white"
+                    className="rounded-xl bg-indigo-600 px-5 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
                   >
                     Get Started
                   </Link>
+
                 </div>
               ) : (
-                <div className="pt-3 border-t border-slate-100">
 
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-10 w-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                      <User size={18} />
+                /* =========================
+                    MOBILE LOGGED IN
+                ========================== */
+                <div className="mt-3 border-t border-slate-100 pt-5">
+
+                  <div className="mb-4 flex items-center gap-3 px-3">
+
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+                      <User size={18} strokeWidth={1.8} />
                     </div>
 
                     <div>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
                         Welcome
                       </p>
 
@@ -226,15 +264,18 @@ const Navbar = () => {
                         {user.name}
                       </p>
                     </div>
+
                   </div>
 
                   <button
+                    type="button"
                     onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
                   >
-                    <LogOut size={17} />
+                    <LogOut size={17} strokeWidth={1.8} />
                     Logout
                   </button>
+
                 </div>
               )}
             </div>
